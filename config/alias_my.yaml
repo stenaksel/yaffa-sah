@@ -1,0 +1,56 @@
+title: My - My own aliases
+# Your own aliases (moved here from the project's config/alias_my.yaml).
+# This file is in your user folder ($YAFFA_USER_FOLDER, default ~/.yaffa),
+# outside the repo. An alias here with the same name as a project alias
+# replaces it. You can splice the project's requirements (e.g. req_python).
+
+aliases:
+
+  - name: mrep
+    command: python -m webbrowser https://search.maven.org/
+    description: "Open: Maven Central Repository Search"
+    requires:
+      - req_python
+
+  - name: mvn_central
+    synonym: mcrs, mvnc
+    command: python -m webbrowser https://search.maven.org/
+    description: "Open: Maven Central Repository Search"
+    requires:
+      - req_python
+
+  - name: package-search
+    synonym: pacs, jbps
+    command: python -m webbrowser https://package-search.jetbrains.com
+    description: "Open: (JetBrain) Package Search"
+    requires:
+      - req_python
+
+  - name: bdd
+    command:
+      case:
+        - file: pom.xml
+          use: mvn clean verify -PBDD   # needs a 'BDD' profile in the pom — https://stackoverflow.com/a/18171166
+        - file: gradlew
+          use: ./gradlew jvmTest --tests '*Cucumber*'   # Kotlin Multiplatform (e.g. YAFFA-K): jvmTest, not test
+        - file: pytest.ini
+          use: python -m pytest features
+        - file: requirements-dev.txt
+          use: python -m pytest features
+      else: No Maven, Gradle or pytest project found here — run 'bdd' from a project root
+    description: Run the BDD (feature file) tests — Maven (BDD profile), Gradle (Cucumber runner) or pytest-bdd project
+
+  - name: tdd
+    command:
+      case:
+        - file: pom.xml
+          use: mvn clean test
+        - file: gradlew
+          use: ./gradlew jvmTest
+        - file: pytest.ini
+          use: python -m pytest tests
+        - file: requirements-dev.txt
+          use: python -m pytest tests
+      else: No Maven, Gradle or pytest project found here — run 'tdd' from a project root
+    description: Run the unit (TDD) tests — Maven, Gradle or pytest project
+
