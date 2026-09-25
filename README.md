@@ -14,5 +14,5 @@ To change them, edit the alias definitions and re-run the YAFFA generator.
 
 ## My own aliases
 
-[`config/alias_my.yaml`](config/alias_my.yaml) holds my own aliases. An alias here with the same
-name as a YAFFA project alias replaces it. YAFFA generates `alias_my.sh` / `alias_my.ps1` from it.
+[`config/alias_sah.yaml`](config/alias_sah.yaml) holds my own aliases. An alias here with the same
+name as a YAFFA project alias replaces it. YAFFA generates `alias_sah.sh` / `alias_sah.ps1` from it.
