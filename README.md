@@ -139,6 +139,37 @@ and `requires` checks. List one or more synonyms as a comma-separated string (or
 
 This generates `mcud` and `mddu` alongside the primary `mcu-d` alias.
 
+### Conditional commands (`case` / `else`)
+
+Instead of a single command string, `command` can hold a `case` list that picks the command to run based on what's in
+the current directory. The entries are checked in order, and the first match wins:
+
+- `file:` — the entry matches when that file exists in the current directory
+- `use:` — the command to run when the entry matches
+- `else:` — the error message shown when no entry matches (nothing is run)
+
+Example from [`config/alias_my.yaml`](config/alias_my.yaml): one `tdd` alias that runs the unit tests for a Maven,
+Gradle or pytest project:
+
+```yaml
+  - name: tdd
+    command:
+      case:
+        - file: pom.xml
+          use: mvn clean test
+        - file: gradlew
+          use: ./gradlew jvmTest
+        - file: pytest.ini
+          use: python -m pytest tests
+        - file: requirements-dev.txt
+          use: python -m pytest tests
+      else: No Maven, Gradle or pytest project found here — run 'tdd' from a project root
+    description: Run the unit (TDD) tests — Maven, Gradle or pytest project
+```
+
+This generates an `if` / `elif` / `else` chain in both the Bash and PowerShell versions of the alias. Extra arguments are
+passed on to the chosen command, so `tdd -o` runs `mvn clean test -o` in a Maven project.
+
 ### OS differences to be aware of
 
 - **Bash:** an alias is literal text substitution, so arguments can be hardcoded into it (e.g. `alias gs='git status'`).
