@@ -1,1 +1,4 @@
-.idea/workspace.xml
+.idea/
+
+# Allow a temp directory to exist that don't get committed
+temp/
